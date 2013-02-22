@@ -39,7 +39,31 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler());
+  // app.use(express.errorHandler());
+  app.use(function(req,res,next){
+    
+    res.locals.user = req.session.user;
+
+    res.locals.error = function(req,res){
+      var err = req.flash('error');
+      if(err.length){
+        return err;
+      }else{
+        return null;
+      }
+    };
+
+    res.locals.success = function(req,res){
+      var succ = req.flash('success');
+      if(succ.length){
+        return succ;
+      }else{
+        return null;
+      }
+    };
+
+    next();
+  });
 });
 
 
