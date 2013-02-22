@@ -23,12 +23,17 @@ User.prototype.save = function save(callback){
   				db.close();
   				return callback(err);
   			}
-  			collection.ensureIndex('name',{unique:true});
+  		// 	collection.ensureIndex('user_name_index',{name:1},{unique:true},function(err,indexname){
+  		// 		if(err){
+				// 	return console.log(err);
+				// }
+  		// 	});
+
     		collection.insert(user,{safe:true}, function(err,user) {
     			db.close();
     			callback(err,user);
     		});
-  		});
+		});
 	});
 };
 

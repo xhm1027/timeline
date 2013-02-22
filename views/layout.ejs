@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href = 'css/bootstrap.min.css' />
+    <style type='text/css'>
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class = "navbar navbar-fixed-top">
+      <div class = "navbar-inner">
+        <div class = "container">
+          <a class = "btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class = "brand" href="/">timeline</a>
+          <div class = "nav-collapse">
+            <ul class = 'nav'>
+              <li class='active'><a herf='/'>timeline</a></li>
+              <li><a href="/login">login</a></li>
+              <li><a href="/reg">register</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="container" class="container">
+      <%- body %>
+      <hr>
+      <footer>
+        <p><a href="http://xuxinyuan.herokuapp.com" target="_blank">xhm1027@gmail.com</a> 2013</p>
+      </footer>
+
+    </div>
+  </body>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+</html>

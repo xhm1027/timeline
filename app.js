@@ -4,9 +4,11 @@
  */
 
 var express = require('express')
+  , expressLayouts = require('express-ejs-layouts')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path');
+var settings = require('./settings');
 
 var mongodb = require('mongodb').Db;
 
@@ -25,7 +27,12 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: "timeline" }));
+  app.use(express.session({ 
+    secret: settings.cookieSecret
+    })
+  );
+
+  app.use(expressLayouts);
   app.use(app.router);
   //app.use(express.router(routes));
   app.use(express.static(path.join(__dirname, 'public')));
