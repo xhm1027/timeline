@@ -23,11 +23,11 @@
           <div class = "nav-collapse">
             <ul class = 'nav'>
               <li class='active'><a herf='/'>timeline</a></li>
-              <% if(locals.user) { %>
+              <% if(!locals.user) { %>
                 <li><a href="/login">login</a></li>
                 <li><a href="/reg">register</a></li>
               <% } else { %>
-                <li><a href="/logout"></a></li>
+                <li><a href="/logout">logout</a></li>
               <% } %>
             </ul>
           </div>

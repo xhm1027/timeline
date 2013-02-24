@@ -3,6 +3,8 @@
  * GET home page.
  */
 
+var User = require('../models/user.js');
+
 module.exports = function(app){
 	app.get('/',function(req,res){
 		res.render('index', { 
@@ -22,7 +24,6 @@ module.exports = function(app){
 			req.session.error = 'password not same';
 			return res.redirect('/reg');
 		}
-		var User = require('../models/user.js');
 		var newUser = new User({
 			name: req.body.username,
 			password:req.body.password,
@@ -45,13 +46,50 @@ module.exports = function(app){
 					req.session.error = err;
 					return res.redirect('/reg');
 				}
-				req.session.user = newUser;
+				// req.session.user = newUser;
 				req.session.success ='reg success';
 				console.log('reg success');
 
 				//req.session.messages ='reg success';
-				res.redirect('/reg');
+				res.redirect('/login');
 			});
 		});
 	});
+	
+	app.get('/login',function(req,res){
+		res.render('login',{title: 'timeline login'});
+	});
+
+	app.post('/login',function(req,res){
+		//check user exist or not
+		User.get(req.body.username,function(err,user){
+			//user not exist
+			if(!user){
+				err = 'user not exist';
+			}else if(req.body.password!=user.password){
+				err = 'password error';
+			}
+			if(err){
+				//	req.session.messages = err;
+				req.session.error = err;
+				console.log(err);
+				return res.redirect('/login');
+			}
+			req.session.user = user;
+			req.session.success ='login success';
+			console.log('login success');
+
+			//req.session.messages ='reg success';
+			res.redirect('/login');
+			
+		});
+	});
+
+
+	app.get('/logout', function(req,res){
+		req.session.user = null;
+		req.session.success ='logout success';
+		res.redirect('/login');
+	});
+
 }
