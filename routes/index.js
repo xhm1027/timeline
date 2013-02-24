@@ -12,9 +12,13 @@ module.exports = function(app){
 			layout: 'layout_timeline'
 		});
 	});
+
+	app.get('/reg',checkNotLogin);
 	app.get('/reg',function(req,res){
 		res.render('reg', { title: 'timeline register' });
 	});
+
+	app.post('/reg',checkNotLogin);
 	app.post('/reg',function(req,res){
 		//check password
 		if(req.body['password-repeat'] != req.body['password']){
@@ -56,10 +60,12 @@ module.exports = function(app){
 		});
 	});
 	
+	app.get('/login',checkNotLogin);
 	app.get('/login',function(req,res){
 		res.render('login',{title: 'timeline login'});
 	});
 
+	app.post('/login',checkNotLogin);
 	app.post('/login',function(req,res){
 		//check user exist or not
 		User.get(req.body.username,function(err,user){
@@ -85,11 +91,28 @@ module.exports = function(app){
 		});
 	});
 
-
+	app.get('/login',checkLogin);
 	app.get('/logout', function(req,res){
 		req.session.user = null;
 		req.session.success ='logout success';
 		res.redirect('/login');
 	});
 
+}
+
+
+function checkLogin(req,res,next){
+	if(!req.session.user){
+		req.session.error = 'you have not logined';
+		return res.redirect('/login');
+	}
+	next();
+}
+
+function checkNotLogin(req,res,next){
+	if(req.session.user){
+		req.session.error = 'you have logined';
+		return res.redirect('/');
+	}
+	next();
 }
