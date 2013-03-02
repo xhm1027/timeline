@@ -149,10 +149,18 @@ module.exports = function(app){
 			if(!user){
 				return res.end('user not exist!');
 			}
-			res.render('show',{
-				title:'data list',
-				layout: 'layout_timeline',
-				username: req.params.user,
+			Data.get(req.params.user,function(err,datas){
+				if(err){
+					req.session.error=err;
+					return res.redirect('/list');
+				};
+
+				res.render('show',{
+					title:'data list',
+					layout: 'layout_timeline',
+					username: req.params.user,
+					datas:JSON.stringify(datas),
+				});
 			});
 		});
 	});
