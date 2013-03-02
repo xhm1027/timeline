@@ -1,0 +1,26 @@
+
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>startDate</th>
+      <th>headline</th>
+      <th>text</th>
+      <th>media</th>
+      <th>credit</th>
+      <th>caption</th>
+    </tr>
+  </thead>
+  <tbody>
+<% datas.forEach(function(data,index){ %>
+    <tr>
+      <td><%=data.startDate%></td>
+      <td><%=data.headline%></td>
+      <td><%=data.text%></td>
+      <td><%=data.asset.media%></td>
+      <td><%=data.asset.credit%></td>
+      <td><%=data.asset.caption%></td>
+    </tr>
+ <% }) %>
+
+  </tbody>
+</table>
