@@ -1,6 +1,7 @@
 var mongodb = require('mongodb').Db;
 var mongoUri = require('../settings').mongoUri;
 var Asset = require('./asset');
+var dbwrapper = require('mongodb-wrapper');
 
 function Data(data){
 	this.username = data.username;
@@ -8,7 +9,7 @@ function Data(data){
 	this.endDate = data.endDate;
 	this.headline = data.headline;
 	this.text = data.text;
-	// this.asset = data.asset;
+	this._id = data._id;
 	this.asset = new Asset(data.asset);
 };
 
@@ -66,11 +67,32 @@ Data.get = function get(username, callback){
 			collection.find({username: username}).toArray(function(err,docs){
 				db.close();
 				var datas =[];
+				console.log('datas:'+JSON.stringify(docs));
 				docs.forEach(function(doc,index){
 					var data = new Data(doc);
 					datas.push(data);
 				});
 				callback(null,datas);
+			});
+		});
+	});
+};
+
+Data.remove = function remove(id, callback){
+	mongodb.connect(mongoUri,function(err,db){
+		if(err){
+			return callback(err);
+		}
+		db.collection('datas',function(err,collection){
+			if(err){
+				db.close();
+				return callback(err);
+			}
+			        
+        	var objectId = new dbwrapper.ObjectID(id);
+			collection.remove({_id: objectId},function(err,numberOfRemovedDocs){
+				db.close();
+				callback(null,numberOfRemovedDocs);
 			});
 		});
 	});

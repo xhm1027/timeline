@@ -7,6 +7,8 @@ var User = require('../models/user.js');
 
 var Data = require('../models/data.js');
 
+var crypto = require('crypto');
+
 module.exports = function(app){
 	app.get('/',function(req,res){
 		res.render('index', { 
@@ -24,15 +26,15 @@ module.exports = function(app){
 	app.post('/reg',function(req,res){
 		//check password
 		if(req.body['password-repeat'] != req.body['password']){
-			//req.session.messages = 'password not same';
 			console.log('password not same');
-			// req.flash('password not same');
 			req.session.error = 'password not same';
 			return res.redirect('/reg');
 		}
+		var md5 = crypto.createHash('md5');
+		var password = md5.update(req.body.password).digest('base64');
 		var newUser = new User({
 			name: req.body.username,
-			password:req.body.password,
+			password:password,
 		});
 		//check user exist or not
 		User.get(newUser.name,function(err,user){
@@ -41,7 +43,6 @@ module.exports = function(app){
 				err = 'user already exist';
 			}
 			if(err){
-				//	req.session.messages = err;
 				req.session.error = err;
 				console.log(err);
 				return res.redirect('/reg');
@@ -52,11 +53,9 @@ module.exports = function(app){
 					req.session.error = err;
 					return res.redirect('/reg');
 				}
-				// req.session.user = newUser;
 				req.session.success ='reg success';
 				console.log('reg success');
 
-				//req.session.messages ='reg success';
 				res.redirect('/login');
 			});
 		});
@@ -69,12 +68,15 @@ module.exports = function(app){
 
 	app.post('/login',checkNotLogin);
 	app.post('/login',function(req,res){
+		var md5 = crypto.createHash('md5');
+		var password = md5.update(req.body.password).digest('base64');
+
 		//check user exist or not
 		User.get(req.body.username,function(err,user){
 			//user not exist
 			if(!user){
 				err = 'user not exist';
-			}else if(req.body.password!=user.password){
+			}else if(password!=user.password){
 				err = 'password error';
 			}
 			if(err){
@@ -83,7 +85,6 @@ module.exports = function(app){
 				return res.redirect('/login');
 			}
 			req.session.user = user;
-			// req.session.success ='login success';
 			console.log('login success');
 			res.redirect('/list');
 			
@@ -104,7 +105,6 @@ module.exports = function(app){
 
 	app.post('/data',checkLogin);
 	app.post('/data',function(req,res){
-		// console.log(req.session.user);
 		var newData = new Data({
 			username:req.session.user.name,
 			startDate: req.body.startDate,
@@ -165,24 +165,19 @@ module.exports = function(app){
 		});
 	});
 
-	app.get('/showdata/:user',function(req,res){
-		Data.get(req.params.user,function(err,datas){
+	app.get('/dataDel',checkLogin);
+	app.get('/dataDel/:id',function(req,res){
+		Data.remove(req.params.id,function(err,num){
+			console.log('del num:'+num);
 			if(err){
-				req.session.error=err;
-				return res.redirect('/list');
-			};
-			res.json(
-				{
-					"timeline":
-				    {
-				        "headline":"Sh*t People Say",
-				        "type":"default",
-						"text":"People say stuff",
-						"startDate":"2012,1,26",
-				        "date": datas
-				    }
-				}
-			);
+				req.session.error = err;
+			}else if(num>=1){
+				req.session.success ='delete success';
+			}else{
+				req.session.error = 'delete fail';
+			}
+
+			return res.redirect('/list');
 		});
 	});
 

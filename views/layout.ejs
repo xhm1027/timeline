@@ -27,6 +27,9 @@
                 <li><a href="/login">login</a></li>
                 <li><a href="/reg">register</a></li>
               <% } else { %>
+                <li><a href="/data">add media</a></li>
+                <li><a href="/list">list</a></li>
+                <li><a href="/show/<%=locals.user.name%>" target="_blank">show</a></li>
                 <li><a href="/logout">logout</a></li>
               <% } %>
             </ul>
