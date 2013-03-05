@@ -1,16 +1,17 @@
+<script src="js/bootstrap-datepicker.js"></script>
 <form class="form-horizontal" method="post">
 	<fieldset>
 		<legend>
 			<div class="control-group">
 				<label class="control-label" for="startDate">startDate</label>
 				<div class="controls">
-					<input type="text" class="input-xlarge"  name="startDate">
+					<input type="text"  class="datepicker" name="startDate" >
 				</div>
 			</div>
 			<div class="control-group">
 				<label class="control-label" for="endDate">endDate</label>
 				<div class="controls">
-					<input type="text" class="input-xlarge"  name="endDate">
+					<input type="text" class="datepicker"  name="endDate">
 				</div>
 			</div>
 			<div class="control-group">
@@ -50,3 +51,8 @@
 		</legend>
 	</fieldset>
 </form>
+<script type="text/javascript">
+	$('.datepicker').datepicker({
+	    format: 'mm/dd/yyyy'
+	});
+</script>
