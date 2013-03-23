@@ -8,7 +8,8 @@
     "ejs": "*",
     "mongodb" : "*",
     "mongodb-wrapper" : "*",
-    "async" : "*"
+    "async" : "*",
+    "node-sina-weibo" : "*"
   },
   "engines": {
     "node": "0.8.14",
