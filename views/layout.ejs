@@ -21,10 +21,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class = "brand" href="/">timeline</a>
+          <a class = "brand" herf='https://api.weibo.com/oauth2/authorize?redirect_uri=http://timelineme.herokuapp.com/oauth/callback&response_type=code&client_id=2843203249&type=web_server' target="_blank">微博图片</a>
           <div class = "nav-collapse">
             <ul class = 'nav'>
-              <li class='active'><a herf='https://api.weibo.com/oauth2/authorize?redirect_uri=http://timelineme.herokuapp.com/oauth/callback&response_type=code&client_id=2843203249&type=web_server' target="_blank">微博图片</a></li>
+              <li class='active'><a herf='/'>timeline</a></li>
               <% if(!locals.user) { %>
                 <li><a href="/login">login</a></li>
                 <li><a href="/reg">register</a></li>
