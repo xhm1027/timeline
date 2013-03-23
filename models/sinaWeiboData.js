@@ -34,7 +34,7 @@ SinaWeiboData.getTimelineByWeiboResults = function get(weiboResults, callback){
 	for(var i=0,l=weiboResults.statuses.length;i<l;i++){
 
 	   // console.log(weiboResults.statuses[i]);
-	   console.log('count:'+count);
+	   // console.log('count:'+count);
 	   count+=1;
 	   weibos.push(new SinaWeiboData(weiboResults.statuses[i]));
 	}
