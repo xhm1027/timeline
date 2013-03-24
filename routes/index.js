@@ -17,10 +17,11 @@ var weibo = new SinaWeibo("2843203249", "c9eb632a56aa5bce4b41ff050028bd54");
 
 module.exports = function(app){
 	app.get('/',function(req,res){
-		res.render('index', { 
-			title: 'timeline',
-			layout: 'layout_timeline'
-		});
+		// res.render('index', { 
+		// 	title: 'timeline',
+		// 	layout: 'layout_timeline'
+		// });
+		res.render('reg', { title: 'timeline register' });
 	});
 
 	app.get('/reg',checkNotLogin);
