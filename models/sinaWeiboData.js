@@ -17,11 +17,15 @@ function SinaWeiboData(data){
 		caption : data.source
 	};
 	if(data.retweeted_status){
-		s = {
-			media : data.retweeted_status.original_pic,
-			credit : data.retweeted_status.user.screen_name,
-			caption : data.retweeted_status.source
-		};
+		if(data.retweeted_status.original_pic){
+			s.media = data.retweeted_status.original_pic;
+		}
+		if(data.retweeted_status.user.screen_name){
+			s.credit = data.retweeted_status.user.screen_name;
+		}
+		if(data.retweeted_status.source){
+			s.caption = data.retweeted_status.source;
+		}
 	}
 	this.asset = new Asset(s);
 };
