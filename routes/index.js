@@ -193,10 +193,10 @@ module.exports = function(app){
 		weibo.getAccessToken({
                 code : code, // put here your authorize code which is got above via browser
                 grant_type:'authorization_code',
-                redirect_uri:'http://localhost.nodeweibo.com/oauth/callback'
+                redirect_uri:'http://timelineme.herokuapp.com/oauth/callback'
             }, function (err, results, accessToken) {
                 if (err) {
-                	console.log('getAccessToken err:'+err);
+                	console.log('getAccessToken err:'+redirect_uri+";"+err);
                     res.end('getAccessToken err:'+err);
                     return;
                 }
