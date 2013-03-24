@@ -20,7 +20,8 @@ function SinaWeiboData(data){
 		if(data.retweeted_status.original_pic){
 			s.media = data.retweeted_status.original_pic;
 		}
-		if(data.retweeted_status.user.screen_name){
+		if(data.retweeted_status.user){
+			// console.log(JSON.stringify(data.retweeted_status.user));
 			s.credit = data.retweeted_status.user.screen_name;
 		}
 		if(data.retweeted_status.source){
