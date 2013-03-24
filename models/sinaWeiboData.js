@@ -7,7 +7,7 @@ function SinaWeiboData(data){
 	this.endDate = data.created_at;
 	this.headline = data.user.name;
 	if(data.user.description){
-		this.headline += ":"+data.user.description;
+		this.headline += ":"+data.user.description; 
 	}
 	this.text = data.text;
 	this._id = data.id;
