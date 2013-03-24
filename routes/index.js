@@ -197,7 +197,7 @@ module.exports = function(app){
                 redirect_uri:'http://timelineme.herokuapp.com/oauth/callback'
             }, function (err, results, accessToken) {
                 if (err) {
-                	console.log('getAccessToken err:'+redirect_uri+";"+err);
+                	console.log('getAccessToken err:'+err);
                     res.end('getAccessToken err:'+err);
                     return;
                 }
