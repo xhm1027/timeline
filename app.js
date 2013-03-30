@@ -25,7 +25,8 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser());
   app.use(express.session({ 
-    secret: settings.cookieSecret
+    secret: settings.cookieSecret,
+    cookie:{'path':'http://timelineme.herokuapp.com'}
     })
   );
 
@@ -33,17 +34,17 @@ app.configure(function(){
   app.use(function(req,res,next){
     res.locals.user = req.session.user;
 
-      var err = req.session.error;
-      delete req.session.error;
-      if(err){
-        res.locals.error = err;
-      }
+    var err = req.session.error;
+    delete req.session.error;
+    if(err){
+      res.locals.error = err;
+    }
 
-      var succ = req.session.success;
-      delete req.session.success;
-      if(succ){
-        res.locals.success = succ;
-      }
+    var succ = req.session.success;
+    delete req.session.success;
+    if(succ){
+      res.locals.success = succ;
+    }
 
     next();
   });
