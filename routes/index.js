@@ -11,9 +11,11 @@ var User = require('../models/user.js'),
 
 	crypto = require('crypto'),
 
-	SinaWeibo = require('node-sina-weibo');
+	SinaWeibo = require('node-sina-weibo'),
 
-var weibo = new SinaWeibo("2843203249", "c9eb632a56aa5bce4b41ff050028bd54");
+	redirect_uri = 'http://timelineme.herokuapp.com/oauth/callback',
+
+	weibo = new SinaWeibo("2843203249", "c9eb632a56aa5bce4b41ff050028bd54");
 
 module.exports = function(app){
 	app.get('/',function(req,res){
@@ -191,6 +193,9 @@ module.exports = function(app){
 	app.get('/oauth/callback',function(req,res){
 		var code = req.query.code;
 		console.log('code: ' + code);
+		if(req.session.user){
+			return res.redirect('/oauth/index?code='+code);
+		}
 		weibo.getAccessToken({
                 code : code, // put here your authorize code which is got above via browser
                 grant_type:'authorization_code',
@@ -208,9 +213,7 @@ module.exports = function(app){
 	                	res.end('statuses/user_timeline:'+err);
 	                	return;
 	                }
-	                // console.log('result:'+result);
 	                SinaWeiboData.getTimelineByWeiboResults(result,function(err,weibos){
-						 // console.log('weibos:'+JSON.stringify(weibos));
 						 res.render('show',{
 							title:'weibo list',
 							layout: 'layout_timeline',
@@ -218,11 +221,62 @@ module.exports = function(app){
 							datas:JSON.stringify(weibos),
 						});
 					});
-					 // res.end(JSON.stringify(result));
 	            });
             }
         );
 	});
+
+	app.get('/oauth/index',checkLogin);
+	app.get('/oauth/index',function(req,res){
+		var code = req.query.code;
+		res.render('show',{
+			title:'oauth index',
+			code: req.query.code,
+		});
+	});
+
+	app.get('/oauth/view',function(req,res){
+		var code = req.query.code,
+		save = req.query.save;
+		console.log('code: ' + code);
+		weibo.getAccessToken({
+                code : code, // put here your authorize code which is got above via browser
+                grant_type:'authorization_code',
+                redirect_uri:redirect_uri
+            }, function (err, results, accessToken) {
+                if (err) {
+                	console.log('getAccessToken err:'+err);
+                    res.end('getAccessToken err:'+err);
+                    return;
+                }
+                console.log('We have got an accessToken: ' + accessToken);
+                weibo.GET('statuses/user_timeline', {access_token : accessToken ,feature : 2, count:100 }, function (err, result, response) {
+	                if (err) {
+                		console.log('statuses/user_timeline:'+err);
+	                	res.end('statuses/user_timeline:'+err);
+	                	return;
+	                }
+	                SinaWeiboData.getTimelineByWeiboResults(result,function(err,weibos){
+	                	if(save==true){
+	                		for(var i=0,l=weibos.length;i<l;i++){
+	                			var newData = new Data(weibos[i]);
+	                			newData.save(function(err){
+	                				console.log(err);
+	                			});
+	                		}
+	                	}
+						 res.render('show',{
+							title:'weibo list',
+							layout: 'layout_timeline',
+							username: 'weibo',
+							datas:JSON.stringify(weibos),
+						});
+					});
+	            });
+            }
+        );
+	});
+
 
 }
 

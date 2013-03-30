@@ -7,16 +7,13 @@ var express = require('express')
   , expressLayouts = require('express-ejs-layouts')
   , routes = require('./routes')
   , http = require('http')
-  , path = require('path');
-var settings = require('./settings');
-
-var mongodb = require('mongodb').Db;
-
-var mongoUri = process.env.MONGOLAB_URI || 
-  process.env.MONGOHQ_URL || 
-  'mongodb://xhm1027:mongolab798155@ds033907.mongolab.com:33907/heroku_app12065550'; 
-
-var app = express();
+  , path = require('path')
+  , settings = require('./settings')
+  , mongodb = require('mongodb').Db
+  , mongoUri = process.env.MONGOLAB_URI || 
+    process.env.MONGOHQ_URL || 
+    'mongodb://xhm1027:mongolab798155@ds033907.mongolab.com:33907/heroku_app12065550'
+  , app = express();
 
 app.configure(function(){
   app.set('port', process.env.PORT || 80);
