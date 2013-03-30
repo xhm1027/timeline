@@ -194,7 +194,7 @@ module.exports = function(app){
 		var code = req.query.code;
 		console.log('code: ' + code);
 		if(req.session.user){
-			return res.redirect('/oauth/index?code='+code);
+			return res.redirect('/oauth_index?code='+code);
 		}
 		weibo.getAccessToken({
                 code : code, // put here your authorize code which is got above via browser
@@ -226,16 +226,16 @@ module.exports = function(app){
         );
 	});
 
-	app.get('/oauth/index',checkLogin);
-	app.get('/oauth/index',function(req,res){
+	app.get('/oauth_index',checkLogin);
+	app.get('/oauth_index',function(req,res){
 		var code = req.query.code;
-		res.render('show',{
+		res.render('oauth/index',{
 			title:'oauth index',
 			code: req.query.code,
 		});
 	});
 
-	app.get('/oauth/view',function(req,res){
+	app.get('/oauth_view',function(req,res){
 		var code = req.query.code,
 		save = req.query.save;
 		console.log('code: ' + code);
@@ -257,10 +257,24 @@ module.exports = function(app){
 	                	return;
 	                }
 	                SinaWeiboData.getTimelineByWeiboResults(result,function(err,weibos){
-	                	if(save==true){
+	                	if(save==1){
+                			console.log('weibos.length='+weibos.length);
+
 	                		for(var i=0,l=weibos.length;i<l;i++){
-	                			var newData = new Data(weibos[i]);
-	                			newData.save(function(err){
+	                			var weiboData = new Data({
+									username:req.session.user.name,
+									startDate: weibos[i].startDate,
+									endDate: weibos[i].endDate,
+									headline: weibos[i].headline,
+									text: weibos[i].text,
+									asset: {
+										media:weibos[i].asset.media,
+										credit:weibos[i].asset.credit,
+										caption:weibos[i].asset.caption
+									}
+								});
+                				console.log('data '+i+':'+weiboData);
+	                			weiboData.save(function(err){
 	                				console.log(err);
 	                			});
 	                		}
