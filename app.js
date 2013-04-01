@@ -25,8 +25,8 @@ app.configure(function(){
   app.use(express.methodOverride());
   app.use(express.cookieParser());
   app.use(express.session({ 
-    secret: settings.cookieSecret,
-    cookie:{'path':'http://timelineme.herokuapp.com'}
+    secret: settings.cookieSecret
+    // ,cookie:{'path':'http://timelineme.herokuapp.com'}
     })
   );
 
